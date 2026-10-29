@@ -1,40 +1,18 @@
-# API REST con Spring Boot
+# API de Cursos (Spring Boot + PostgreSQL)
 
-Proyecto de actividad: API REST con Spring Boot y Gradle, con controllers que responden peticiones GET con información de prueba.
+API REST con 8 controllers CRUD y derechos ARCO (rectificación, olvidé contraseña con token y cancelación con código).
 
 ## Requisitos
 - Java 17 o superior
-- Gradle (incluido en el proyecto mediante `gradlew`)
-- Postman (para las pruebas)
+- PostgreSQL con la base cursos_db creada
+- Postman
 
-## Cómo ejecutar el proyecto
-Desde la carpeta del proyecto:
+## Inicio rápido
+1. Crear la base de datos cursos_db y cargar los datos del script SQL que se entrega con el manual.
+2. En src/main/resources/application.properties poner la contraseña de tu PostgreSQL en spring.datasource.password y dejar arco.mostrar-codigo=true
+3. Arrancar el proyecto: ./gradlew bootRun
+4. Agregar esta línea al archivo hosts del sistema: 127.0.0.1   api.cursos.test
+5. Importar Cursos_API.postman_collection.json en Postman y correr las carpetas "1 - CRUDs" y "2 - Derechos ARCO" con el Runner.
 
-    gradlew bootRun
-
-En Linux o Mac:
-
-    ./gradlew bootRun
-
-La API queda disponible en: http://localhost:8080
-
-## Controllers y endpoints (método GET)
-
-| Controller | Endpoint | Descripción |
-|---|---|---|
-| SaludoController | /hola | Lista todos los registros |
-| SaludoController | /hola/{id} | Registro por ID |
-| AlumnoController | /alumno | Lista de alumnos |
-| AlumnoController | /alumno/{id} | Alumno por ID |
-| MateriaController | /materia | Lista de materias |
-| MateriaController | /materia/{id} | Materia por ID |
-| EscuelaController | /escuela | Lista de escuelas |
-| EscuelaController | /escuela/{id} | Escuela por ID |
-
-Ejemplo: `http://localhost:8080/alumno/1?campo=nombre` devuelve `{"nombre":"Agny"}`
-
-## Pruebas realizadas
-La evidencia de las pruebas en navegador web y en Postman se encuentra en el archivo `pruebas.pdf`.
-
-## Autor
-Agny Alan Tizapantzi Zuñiga
+## Plan B (terminal)
+    Invoke-RestMethod http://api.cursos.test/idiomas
