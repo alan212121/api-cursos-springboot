@@ -37,4 +37,4 @@ Ejemplo: `http://localhost:8080/alumno/1?campo=nombre` devuelve `{"nombre":"Agny
 La evidencia de las pruebas en navegador web y en Postman se encuentra en el archivo `pruebas.pdf`.
 
 ## Autor
-alan212121
+Agny Alan Tizapantzi Zuñiga

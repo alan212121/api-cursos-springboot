@@ -1,0 +1,2594 @@
+{
+  "info": {
+    "name": "Cursos API - Practica",
+    "description": "Controllers con CRUD (idiomas, niveles, modalidades, tipos de curso, estados, roles, usuarios, solicitudes ARCO) y derechos ARCO. Cambia la variable base_url para apuntar a otro dominio o IP.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1 - CRUDs",
+      "item": [
+        {
+          "name": "CRUD Idiomas",
+          "item": [
+            {
+              "name": "1 Listar Idiomas (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/idiomas",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "idiomas"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "2 Crear (POST) - guarda el id solo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) {",
+                      "  const r = pm.response.json();",
+                      "  const k = Object.keys(r).find(x => x.startsWith('id'));",
+                      "  if (k && r[k] !== undefined) pm.collectionVariables.set('id', r[k]);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/idiomas",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "idiomas"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Italiano\", \"codigo\": \"IT\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Buscar por id (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/idiomas/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "idiomas",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Actualizar (PUT)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/idiomas/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "idiomas",
+                    "{{id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Portugues\", \"codigo\": \"PT\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "5 Eliminar (DELETE)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 204\", function () { pm.response.to.have.status(204); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/idiomas/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "idiomas",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "6 Buscar el eliminado (GET, 404)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 404\", function () { pm.response.to.have.status(404); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/idiomas/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "idiomas",
+                    "{{id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "CRUD Niveles",
+          "item": [
+            {
+              "name": "1 Listar Niveles (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/niveles",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "niveles"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "2 Crear (POST) - guarda el id solo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) {",
+                      "  const r = pm.response.json();",
+                      "  const k = Object.keys(r).find(x => x.startsWith('id'));",
+                      "  if (k && r[k] !== undefined) pm.collectionVariables.set('id', r[k]);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/niveles",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "niveles"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Experto\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Buscar por id (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/niveles/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "niveles",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Actualizar (PUT)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/niveles/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "niveles",
+                    "{{id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Maestria\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "5 Eliminar (DELETE)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 204\", function () { pm.response.to.have.status(204); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/niveles/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "niveles",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "6 Buscar el eliminado (GET, 404)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 404\", function () { pm.response.to.have.status(404); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/niveles/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "niveles",
+                    "{{id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "CRUD Modalidades",
+          "item": [
+            {
+              "name": "1 Listar Modalidades (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/modalidades",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "modalidades"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "2 Crear (POST) - guarda el id solo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) {",
+                      "  const r = pm.response.json();",
+                      "  const k = Object.keys(r).find(x => x.startsWith('id'));",
+                      "  if (k && r[k] !== undefined) pm.collectionVariables.set('id', r[k]);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/modalidades",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "modalidades"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Semipresencial\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Buscar por id (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/modalidades/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "modalidades",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Actualizar (PUT)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/modalidades/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "modalidades",
+                    "{{id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Virtual\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "5 Eliminar (DELETE)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 204\", function () { pm.response.to.have.status(204); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/modalidades/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "modalidades",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "6 Buscar el eliminado (GET, 404)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 404\", function () { pm.response.to.have.status(404); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/modalidades/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "modalidades",
+                    "{{id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "CRUD Tipos de curso",
+          "item": [
+            {
+              "name": "1 Listar Tipos de curso (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tipos-curso",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tipos-curso"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "2 Crear (POST) - guarda el id solo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) {",
+                      "  const r = pm.response.json();",
+                      "  const k = Object.keys(r).find(x => x.startsWith('id'));",
+                      "  if (k && r[k] !== undefined) pm.collectionVariables.set('id', r[k]);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/tipos-curso",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tipos-curso"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Certificacion\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Buscar por id (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tipos-curso/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tipos-curso",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Actualizar (PUT)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/tipos-curso/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tipos-curso",
+                    "{{id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Seminario\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "5 Eliminar (DELETE)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 204\", function () { pm.response.to.have.status(204); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tipos-curso/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tipos-curso",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "6 Buscar el eliminado (GET, 404)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 404\", function () { pm.response.to.have.status(404); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/tipos-curso/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "tipos-curso",
+                    "{{id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "CRUD Estados",
+          "item": [
+            {
+              "name": "1 Listar Estados (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/estados",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "estados"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "2 Crear (POST) - guarda el id solo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) {",
+                      "  const r = pm.response.json();",
+                      "  const k = Object.keys(r).find(x => x.startsWith('id'));",
+                      "  if (k && r[k] !== undefined) pm.collectionVariables.set('id', r[k]);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/estados",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "estados"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Pendiente\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Buscar por id (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/estados/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "estados",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Actualizar (PUT)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/estados/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "estados",
+                    "{{id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Cancelado\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "5 Eliminar (DELETE)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 204\", function () { pm.response.to.have.status(204); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/estados/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "estados",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "6 Buscar el eliminado (GET, 404)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 404\", function () { pm.response.to.have.status(404); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/estados/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "estados",
+                    "{{id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "CRUD Roles",
+          "item": [
+            {
+              "name": "1 Listar Roles (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/roles",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "2 Crear (POST) - guarda el id solo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) {",
+                      "  const r = pm.response.json();",
+                      "  const k = 'idRol';",
+                      "  if (k && r[k] !== undefined) pm.collectionVariables.set('id', r[k]);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/roles",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"ROLE_INVITADO\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Buscar por id (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/roles/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Actualizar (PUT)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/roles/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles",
+                    "{{id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"ROLE_VISITANTE\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "5 Eliminar (DELETE)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 204\", function () { pm.response.to.have.status(204); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/roles/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "6 Buscar el eliminado (GET, 404)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 404\", function () { pm.response.to.have.status(404); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/roles/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "roles",
+                    "{{id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "CRUD Usuarios",
+          "item": [
+            {
+              "name": "1 Listar Usuarios (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/usuarios",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "2 Crear (POST) - guarda el id solo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) {",
+                      "  const r = pm.response.json();",
+                      "  const k = 'idUsuario';",
+                      "  if (k && r[k] !== undefined) pm.collectionVariables.set('id', r[k]);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/usuarios",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Carlos Crud\", \"correo\": \"carlos.crud@correo.com\", \"genero\": \"Masculino\", \"telefono\": \"5511112222\", \"passwordHash\": \"carlos123\", \"idRol\": 3}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Buscar por id (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/usuarios/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Actualizar (PUT)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/usuarios/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Carlos Crud Editado\", \"correo\": \"carlos.crud@correo.com\", \"genero\": \"Masculino\", \"telefono\": \"5533334444\", \"idRol\": 2}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "5 Eliminar (DELETE)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 204\", function () { pm.response.to.have.status(204); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/usuarios/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "6 Buscar el eliminado (GET, 404)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 404\", function () { pm.response.to.have.status(404); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/usuarios/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "CRUD Solicitudes ARCO (historial)",
+          "item": [
+            {
+              "name": "1 Listar Solicitudes ARCO (historial) (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/solicitudes-arco",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "solicitudes-arco"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "2 Crear (POST) - guarda el id solo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) {",
+                      "  const r = pm.response.json();",
+                      "  const k = 'idSolicitud';",
+                      "  if (k && r[k] !== undefined) pm.collectionVariables.set('id', r[k]);",
+                      "}"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/solicitudes-arco",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "solicitudes-arco"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"idUsuario\": 1, \"tipoDerecho\": \"ACCESO\", \"detalles\": \"Quiero conocer que datos personales tienen de mi\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Buscar por id (GET)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/solicitudes-arco/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "solicitudes-arco",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Actualizar (PUT)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/solicitudes-arco/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "solicitudes-arco",
+                    "{{id}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"tipoDerecho\": \"ACCESO\", \"detalles\": \"Solicitud atendida\", \"estado\": \"COMPLETADO\", \"fechaRespuesta\": \"2026-10-29T10:00:00\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "5 Eliminar (DELETE)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 204\", function () { pm.response.to.have.status(204); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/solicitudes-arco/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "solicitudes-arco",
+                    "{{id}}"
+                  ]
+                }
+              }
+            },
+            {
+              "name": "6 Buscar el eliminado (GET, 404)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 404\", function () { pm.response.to.have.status(404); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/solicitudes-arco/{{id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "solicitudes-arco",
+                    "{{id}}"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2 - Derechos ARCO",
+      "item": [
+        {
+          "name": "ARCO 1 - Rectificacion (cambio de pass, name, correo y telefono)",
+          "description": "Se ejecuta en orden. Usa las variables u_nombre, u_correo y u_pass. Cada corrida crea un usuario nuevo con nombre y correo unicos, asi que se puede repetir sin cambiar nada.",
+          "item": [
+            {
+              "name": "0 Crear usuario de prueba (POST)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const t = Date.now();",
+                      "pm.collectionVariables.set('u_nombre', 'Demo ' + t);",
+                      "pm.collectionVariables.set('u_correo', 'demo' + t + '@correo.com');",
+                      "pm.collectionVariables.set('u_pass', 'demo123');"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/usuarios",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"{{u_nombre}}\", \"correo\": \"{{u_correo}}\", \"genero\": \"Femenino\", \"telefono\": \"5544556677\", \"passwordHash\": \"{{u_pass}}\", \"idRol\": 3}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "1 Cambio de pass, verifica por correo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) { pm.collectionVariables.set('u_pass', 'nueva456'); }"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cambio-pass?por=correo&newpass=nueva456",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cambio-pass"
+                  ],
+                  "query": [
+                    {
+                      "key": "por",
+                      "value": "correo"
+                    },
+                    {
+                      "key": "newpass",
+                      "value": "nueva456"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"{{u_nombre}}\", \"correo\": \"{{u_correo}}\", \"password\": \"{{u_pass}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "2 Cambio de pass con pass incorrecta (401)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 401\", function () { pm.response.to.have.status(401); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cambio-pass?por=correo&newpass=otra000",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cambio-pass"
+                  ],
+                  "query": [
+                    {
+                      "key": "por",
+                      "value": "correo"
+                    },
+                    {
+                      "key": "newpass",
+                      "value": "otra000"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"{{u_nombre}}\", \"correo\": \"{{u_correo}}\", \"password\": \"incorrecta\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Cambio de pass, verifica por name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) { pm.collectionVariables.set('u_pass', 'nueva789'); }"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cambio-pass?por=name&newpass=nueva789",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cambio-pass"
+                  ],
+                  "query": [
+                    {
+                      "key": "por",
+                      "value": "name"
+                    },
+                    {
+                      "key": "newpass",
+                      "value": "nueva789"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"{{u_nombre}}\", \"correo\": \"{{u_correo}}\", \"password\": \"{{u_pass}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "4 Cambio de name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) { pm.collectionVariables.set('u_nombre', pm.collectionVariables.get('u_nombre') + ' Editado'); }"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cambio-name?newname={{u_nombre}} Editado",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cambio-name"
+                  ],
+                  "query": [
+                    {
+                      "key": "newname",
+                      "value": "{{u_nombre}} Editado"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"correo\": \"{{u_correo}}\", \"password\": \"{{u_pass}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "5 Cambio de correo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "if (pm.response.code === 200) { pm.collectionVariables.set('u_correo', 'nuevo.' + pm.collectionVariables.get('u_correo')); }"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cambio-correo?newcorreo=nuevo.{{u_correo}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cambio-correo"
+                  ],
+                  "query": [
+                    {
+                      "key": "newcorreo",
+                      "value": "nuevo.{{u_correo}}"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"{{u_nombre}}\", \"password\": \"{{u_pass}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "6 Cambio de correo a uno que ya existe (409)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 409\", function () { pm.response.to.have.status(409); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cambio-correo?newcorreo=usuario1@correo.com",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cambio-correo"
+                  ],
+                  "query": [
+                    {
+                      "key": "newcorreo",
+                      "value": "usuario1@correo.com"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"{{u_nombre}}\", \"password\": \"{{u_pass}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "7 Cambio de telefono",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cambio-tel?newtel=5599998888",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cambio-tel"
+                  ],
+                  "query": [
+                    {
+                      "key": "newtel",
+                      "value": "5599998888"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"correo\": \"{{u_correo}}\", \"password\": \"{{u_pass}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "8 Cambio de telefono con pass incorrecta (401)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 401\", function () { pm.response.to.have.status(401); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cambio-tel?newtel=5500000000",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cambio-tel"
+                  ],
+                  "query": [
+                    {
+                      "key": "newtel",
+                      "value": "5500000000"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"correo\": \"{{u_correo}}\", \"password\": \"incorrecta\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "ARCO 2 - Olvide el pass (token)",
+          "description": "Con arco.mostrar-codigo=true el token sale en la respuesta y se guarda solo en la variable codigo. Con correo real, copia el token del correo en la variable codigo antes de ejecutar el paso 4.",
+          "item": [
+            {
+              "name": "1 Pedir token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "let r = {};",
+                      "try { r = pm.response.json(); } catch (e) {}",
+                      "if (r.token || r.codigo) { pm.collectionVariables.set('codigo', r.token || r.codigo); }"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/olvide-pass",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "olvide-pass"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"{{mail_nombre}}\", \"correo\": \"{{mail_correo}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "2 Pedir token con datos incorrectos (401)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 401\", function () { pm.response.to.have.status(401); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/olvide-pass",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "olvide-pass"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"Otra Persona\", \"correo\": \"{{mail_correo}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "3 Confirmar con token falso (400)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 400\", function () { pm.response.to.have.status(400); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/olvide-pass/confirmar?verificado=abcd1234&newpass=x12345",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "olvide-pass",
+                    "confirmar"
+                  ],
+                  "query": [
+                    {
+                      "key": "verificado",
+                      "value": "abcd1234"
+                    },
+                    {
+                      "key": "newpass",
+                      "value": "x12345"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Confirmar con el token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/olvide-pass/confirmar?verificado={{codigo}}&newpass=clavenueva2026",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "olvide-pass",
+                    "confirmar"
+                  ],
+                  "query": [
+                    {
+                      "key": "verificado",
+                      "value": "{{codigo}}"
+                    },
+                    {
+                      "key": "newpass",
+                      "value": "clavenueva2026"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "5 Reusar el mismo token (400)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 400\", function () { pm.response.to.have.status(400); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/olvide-pass/confirmar?verificado={{codigo}}&newpass=otra99999",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "olvide-pass",
+                    "confirmar"
+                  ],
+                  "query": [
+                    {
+                      "key": "verificado",
+                      "value": "{{codigo}}"
+                    },
+                    {
+                      "key": "newpass",
+                      "value": "otra99999"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "ARCO 3 - Cancelar (code)",
+          "description": "Cancelar desactiva la cuenta. Cada corrida crea un usuario nuevo, asi que se puede repetir sin cambiar nada.",
+          "item": [
+            {
+              "name": "0 Crear usuario para cancelar (POST)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const t = Date.now();",
+                      "pm.collectionVariables.set('cancel_nombre', 'Cancelar ' + t);",
+                      "pm.collectionVariables.set('cancel_correo', 'cancel' + t + '@correo.com');"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/usuarios",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"nombre\": \"{{cancel_nombre}}\", \"correo\": \"{{cancel_correo}}\", \"genero\": \"Femenino\", \"telefono\": \"5511112222\", \"passwordHash\": \"cancel123\", \"idRol\": 3}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "1 Pedir code",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });",
+                      "let r = {};",
+                      "try { r = pm.response.json(); } catch (e) {}",
+                      "if (r.token || r.codigo) { pm.collectionVariables.set('codigo', r.token || r.codigo); }"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cancelar",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cancelar"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"correo\": \"{{cancel_correo}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "name": "2 Confirmar con code falso (400)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 400\", function () { pm.response.to.have.status(400); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cancelar/confirmar?verificado=000000",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cancelar",
+                    "confirmar"
+                  ],
+                  "query": [
+                    {
+                      "key": "verificado",
+                      "value": "000000"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "3 Confirmar con el code",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 200\", function () { pm.response.to.have.status(200); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cancelar/confirmar?verificado={{codigo}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cancelar",
+                    "confirmar"
+                  ],
+                  "query": [
+                    {
+                      "key": "verificado",
+                      "value": "{{codigo}}"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "4 Cuenta cancelada: ya no se puede usar (401)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Codigo esperado: 401\", function () { pm.response.to.have.status(401); });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/arco/cancelar",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "arco",
+                    "cancelar"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"correo\": \"{{cancel_correo}}\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://api.cursos.test"
+    },
+    {
+      "key": "id",
+      "value": ""
+    },
+    {
+      "key": "codigo",
+      "value": ""
+    },
+    {
+      "key": "u_nombre",
+      "value": "Demo Uno"
+    },
+    {
+      "key": "u_correo",
+      "value": "demo1@correo.com"
+    },
+    {
+      "key": "u_pass",
+      "value": "demo123"
+    },
+    {
+      "key": "mail_nombre",
+      "value": "Usuario 5"
+    },
+    {
+      "key": "mail_correo",
+      "value": "usuario5@correo.com"
+    },
+    {
+      "key": "cancel_nombre",
+      "value": "Usuario Cancelar 1"
+    },
+    {
+      "key": "cancel_correo",
+      "value": "cancel1@correo.com"
+    }
+  ]
+}
